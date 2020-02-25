@@ -1,0 +1,92 @@
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package ledger;
+
+import "google/protobuf/timestamp.proto";
+
+service LedgerService {
+  rpc CreateState (CreateStateRequest) returns (CreateStateResponse);
+  rpc ReadState (ReadStateRequest) returns (ReadStateResponse);
+  rpc UpdateState (UpdateStateRequest) returns (UpdateStateResponse);
+  rpc DeleteState (DeleteStateRequest) returns (DeleteStateResponse);
+  rpc ExistsState (ExistsStateRequest) returns (ExistsStateResponse);
+  rpc GetStates (GetStatesRequest) returns (stream GetStatesResponse);
+}
+
+message State {
+  string key = 1;
+  bytes value = 2;
+}
+
+message StateHistory {
+  string key = 1;
+  bytes value = 2;
+  string transaction_id = 3;
+  google.protobuf.Timestamp timestamp = 4;
+  bool is_delete = 5;
+}
+
+message KeyRangeQuery {
+  string start_key = 1;
+  string end_key = 1;
+}
+
+message PartialKeyQuery { }
+
+message FromKeyQuery { }
+
+message ToKeyQuery { }
+
+message CreateStateRequest {
+  string transaction_id = 1;
+  State state = 2;
+}
+
+message CreateStateResponse { }
+
+message ReadStateRequest {
+  string transaction_id = 1;
+  string state_key = 2
+}
+
+message ReadStateResponse {
+    State state = 1;
+}
+
+message UpdateStateRequest {
+  string transaction_id = 1;
+  State state = 2;
+}
+
+message UpdateStateResponse { }
+
+message DeleteStateRequest {
+  string transaction_id = 1;
+  string state_key = 2
+}
+
+message DeleteStateResponse { }
+
+message ExistsStateRequest {
+  string transaction_id = 1;
+  string state_key = 2
+}
+
+message ExistsStateResponse {
+    bool exists = 1;
+}
+
+message GetStatesRequest {
+  oneof query {
+    KeyRangeQuery by_key_range = 1;
+    PartialKeyQuery by_partial_key = 2;
+    FromKeyQuery by_from_key = 3;
+    ToKeyQuery by_to_key = 4;
+  }
+}
+
+message GetStatesResponse {
+    State state = 1;
+}
