@@ -2,4 +2,28 @@
 
 syntax = "proto3";
 
-package contract;
+package hyperledgendary;
+
+service ContractService {
+  rpc GetMetadata (GetMetadataRequest) returns (GetMetadataResponse);
+  rpc InvokeTransaction (InvokeTransactionRequest) returns (InvokeTransactionResponse);
+  rpc RegisterPeer (RegisterPeerRequest) returns (RegisterPeerResponse);
+}
+
+message GetMetadataRequest {
+}
+
+message GetMetadataResponse {
+}
+
+message InvokeTransactionRequest {
+}
+
+message InvokeTransactionResponse {
+}
+
+message RegisterPeerRequest {
+}
+
+message RegisterPeerResponse {
+}

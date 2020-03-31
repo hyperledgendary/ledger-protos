@@ -2,7 +2,7 @@
 
 syntax = "proto3";
 
-package ledger;
+package hyperledgendary;
 
 import "google/protobuf/timestamp.proto";
 

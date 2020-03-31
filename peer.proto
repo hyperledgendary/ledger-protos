@@ -1,0 +1,22 @@
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package hyperledgendary;
+
+service PeerService {
+  rpc InvokeTransaction (InvokeTransactionRequest) returns (InvokeTransactionResponse);
+  rpc RegisterContract (RegisterContractRequest) returns (RegisterContractResponse);
+}
+
+message InvokeTransactionRequest {
+}
+
+message InvokeTransactionResponse {
+}
+
+message RegisterContractRequest {
+}
+
+message RegisterContractResponse {
+}
