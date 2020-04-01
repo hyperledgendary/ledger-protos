@@ -14,16 +14,22 @@ message GetMetadataRequest {
 }
 
 message GetMetadataResponse {
+    bytes payload = 1;
 }
 
 message InvokeTransactionRequest {
+    string channel_id = 1
+    string transaction_id = 2; 
+    string name = 3;
+    bytes payload = 4;
 }
 
 message InvokeTransactionResponse {
+    bytes payload = 1;
 }
 
-message RegisterPeerRequest {
+message RegisterPeerConnectionRequest {
 }
 
-message RegisterPeerResponse {
+message RegisterPeerConnectionResponse {
 }
