@@ -14,21 +14,24 @@ message GetMetadataRequest {
 }
 
 message GetMetadataResponse {
-    bytes payload = 1;
+  bytes payload = 1;
 }
 
 message InvokeTransactionRequest {
-    string channel_id = 1
-    string transaction_id = 2; 
-    string name = 3;
-    bytes payload = 4;
+  string channel_id = 1
+  string transaction_id = 2; 
+  string transaction_name = 3;
+  bytes payload = 4;
 }
 
 message InvokeTransactionResponse {
-    bytes payload = 1;
+  bytes payload = 1;
 }
 
+// This is going to need TLS settings and client CA stuff...
 message RegisterPeerConnectionRequest {
+  string peer_address = 1;
+  string peer_port = 2;
 }
 
 message RegisterPeerConnectionResponse {
