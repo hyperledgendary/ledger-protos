@@ -30,7 +30,7 @@ message StateHistory {
 
 message KeyRangeQuery {
   string start_key = 1;
-  string end_key = 1;
+  string end_key = 2;
 }
 
 message PartialKeyQuery { }
@@ -48,7 +48,7 @@ message CreateStateResponse { }
 
 message ReadStateRequest {
   string transaction_id = 1;
-  string state_key = 2
+  string state_key = 2;
 }
 
 message ReadStateResponse {
@@ -64,14 +64,14 @@ message UpdateStateResponse { }
 
 message DeleteStateRequest {
   string transaction_id = 1;
-  string state_key = 2
+  string state_key = 2;
 }
 
 message DeleteStateResponse { }
 
 message ExistsStateRequest {
   string transaction_id = 1;
-  string state_key = 2
+  string state_key = 2;
 }
 
 message ExistsStateResponse {
