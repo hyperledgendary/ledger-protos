@@ -17,11 +17,11 @@ message InvokeTransactionResponse {
 }
 
 // This is going to need TLS settings and client CA stuff...
-message RegisterContractConnectionRequest {
+message RegisterContractRequest {
   string contract_id = 1;
   string contract_address = 2;
   string contract_port = 3;
 }
 
-message RegisterContractConnectionResponse {
+message RegisterContractResponse {
 }
