@@ -1,0 +1,17 @@
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package hyperledgendary;
+
+import "ledger_messages.proto";
+import "google/protobuf/timestamp.proto";
+
+service LedgerService {
+  rpc CreateState (CreateStateRequest) returns (CreateStateResponse);
+  rpc ReadState (ReadStateRequest) returns (ReadStateResponse);
+  rpc UpdateState (UpdateStateRequest) returns (UpdateStateResponse);
+  rpc DeleteState (DeleteStateRequest) returns (DeleteStateResponse);
+  rpc ExistsState (ExistsStateRequest) returns (ExistsStateResponse);
+  rpc GetStates (GetStatesRequest) returns (stream GetStatesResponse);
+}

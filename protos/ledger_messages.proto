@@ -6,15 +6,6 @@ package hyperledgendary;
 
 import "google/protobuf/timestamp.proto";
 
-service LedgerService {
-  rpc CreateState (CreateStateRequest) returns (CreateStateResponse);
-  rpc ReadState (ReadStateRequest) returns (ReadStateResponse);
-  rpc UpdateState (UpdateStateRequest) returns (UpdateStateResponse);
-  rpc DeleteState (DeleteStateRequest) returns (DeleteStateResponse);
-  rpc ExistsState (ExistsStateRequest) returns (ExistsStateResponse);
-  rpc GetStates (GetStatesRequest) returns (stream GetStatesResponse);
-}
-
 message State {
   string key = 1;
   bytes value = 2;
