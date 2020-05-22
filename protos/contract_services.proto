@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package hyperledgendary;
+
+import "contract_messages.proto";
+
+service ContractService {
+  rpc GetMetadata (GetMetadataRequest) returns (GetMetadataResponse);
+  rpc InvokeTransaction (InvokeTransactionRequest) returns (InvokeTransactionResponse);
+  rpc RegisterPeer (RegisterPeerRequest) returns (RegisterPeerResponse);
+}

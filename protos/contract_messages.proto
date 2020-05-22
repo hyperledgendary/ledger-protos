@@ -4,12 +4,6 @@ syntax = "proto3";
 
 package hyperledgendary;
 
-service ContractService {
-  rpc GetMetadata (GetMetadataRequest) returns (GetMetadataResponse);
-  rpc InvokeTransaction (InvokeTransactionRequest) returns (InvokeTransactionResponse);
-  rpc RegisterPeer (RegisterPeerRequest) returns (RegisterPeerResponse);
-}
-
 message GetMetadataRequest {
 }
 
@@ -18,7 +12,7 @@ message GetMetadataResponse {
 }
 
 message InvokeTransactionRequest {
-  string channel_id = 1
+  string channel_id = 1;
   string transaction_id = 2; 
   string transaction_name = 3;
   bytes payload = 4;
