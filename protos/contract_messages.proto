@@ -23,10 +23,10 @@ message InvokeTransactionResponse {
 }
 
 // This is going to need TLS settings and client CA stuff...
-message RegisterPeerConnectionRequest {
+message RegisterPeerRequest {
   string peer_address = 1;
   string peer_port = 2;
 }
 
-message RegisterPeerConnectionResponse {
+message RegisterPeerResponse {
 }
