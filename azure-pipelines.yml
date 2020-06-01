@@ -10,7 +10,7 @@ steps:
     # Substitute VERSION for the current released version.
     # Substitute BINARY_NAME for "buf", "protoc-gen-buf-check-breaking", or "protoc-gen-buf-check-lint".
     BIN="$(Pipeline.Workspace)/.bin/" && \
-    VERSION="0.13.0" && \
+    VERSION="0.15.0" && \
     BINARY_NAME="buf" && \
       mkdir -p "${BIN}" && \
       curl -sSL \
@@ -28,6 +28,9 @@ steps:
   displayName: 'Lint'
 
 - script: |
-    buf image build -o /dev/null
+    buf image build -o ledger-image.bin --file protos/contract_messages.proto --file protos/ledger_messages.proto
   workingDirectory: '$(System.DefaultWorkingDirectory)'
   displayName: 'Build'
+
+- publish: $(System.DefaultWorkingDirectory)/ledger-image.bin
+  artifact: LedgerImage

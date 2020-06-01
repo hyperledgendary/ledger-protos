@@ -1,6 +1,6 @@
 build:
   roots:
-    - ./protos
+    - protos
 lint:
   use:
     - BASIC
