@@ -2,7 +2,9 @@
 
 syntax = "proto3";
 
-package hyperledgendary;
+package contract;
+
+option go_package = "https://github.com/hyperledgendary/fabric-ledger-protos-go/contract";
 
 import "ledger_messages.proto";
 import "google/protobuf/timestamp.proto";
