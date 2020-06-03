@@ -4,33 +4,87 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- script: |
-    # Substitute BIN for your bin directory.
-    # Substitute VERSION for the current released version.
-    # Substitute BINARY_NAME for "buf", "protoc-gen-buf-check-breaking", or "protoc-gen-buf-check-lint".
-    BIN="$(Pipeline.Workspace)/.bin/" && \
-    VERSION="0.15.0" && \
-    BINARY_NAME="buf" && \
-      mkdir -p "${BIN}" && \
-      curl -sSL \
-        "https://github.com/bufbuild/buf/releases/download/v${VERSION}/${BINARY_NAME}-$(uname -s)-$(uname -m)" \
-        -o "${BIN}/${BINARY_NAME}" && \
-      chmod +x "${BIN}/${BINARY_NAME}" && \
-      echo "##vso[task.prependpath]$(Pipeline.Workspace)/.bin/"
-  workingDirectory: '$(System.DefaultWorkingDirectory)'
-  displayName: 'Get dependencies'
+jobs:
+- job: BuildLedgerImage
+  displayName: 'Build proto image'
+  steps:
+  - script: |
+      # Substitute BIN for your bin directory.
+      # Substitute VERSION for the current released version.
+      # Substitute BINARY_NAME for "buf", "protoc-gen-buf-check-breaking", or "protoc-gen-buf-check-lint".
+      BIN="$(Pipeline.Workspace)/.bin/" && \
+      VERSION="0.15.0" && \
+      BINARY_NAME="buf" && \
+        mkdir -p "${BIN}" && \
+        curl -sSL \
+          "https://github.com/bufbuild/buf/releases/download/v${VERSION}/${BINARY_NAME}-$(uname -s)-$(uname -m)" \
+          -o "${BIN}/${BINARY_NAME}" && \
+        chmod +x "${BIN}/${BINARY_NAME}" && \
+        echo "##vso[task.prependpath]$(Pipeline.Workspace)/.bin/"
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    displayName: 'Get dependencies'
 
-- script: |
-    buf ls-files
-    buf check lint
-  workingDirectory: '$(System.DefaultWorkingDirectory)'
-  displayName: 'Lint'
+  - script: |
+      buf ls-files
+      buf check lint
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    displayName: 'Lint'
 
-- script: |
-    buf image build -o ledger-image.bin --file protos/contract_messages.proto --file protos/ledger_messages.proto
-  workingDirectory: '$(System.DefaultWorkingDirectory)'
-  displayName: 'Build'
+  - script: |
+      buf image build -o ledger-image.bin --file protos/contract_messages.proto --file protos/ledger_messages.proto
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    displayName: 'Build'
 
-- publish: $(System.DefaultWorkingDirectory)/ledger-image.bin
-  artifact: LedgerImage
+  - publish: $(System.DefaultWorkingDirectory)/ledger-image.bin
+    artifact: LedgerImage
+
+- job: GenerateGoLib
+  displayName: 'Generate Go lib'
+  dependsOn: BuildLedgerImage
+
+  variables:
+    GOBIN:  '$(GOPATH)/bin'
+    GOPATH: '$(system.defaultWorkingDirectory)/go'
+
+  steps:
+  - download: current
+    artifact: LedgerImage
+
+  - task: GoTool@0
+    inputs:
+      version: '1.13.5'
+
+  # - task: Go@0
+  #   displayName: 'go get proto'
+  #   inputs:
+  #     command: get
+  #     arguments: '-u github.com/golang/protobuf/proto'
+
+  - task: Go@0
+    displayName: 'go get protoc-gen-go'
+    inputs:
+      command: get
+      arguments: '-u github.com/golang/protobuf/protoc-gen-go'
+
+  - script: |
+      LOCAL="$(Pipeline.Workspace)/.local/" && \
+      mkdir -p "${LOCAL}" && \
+      VERSION="3.12.1" && \
+        PB_REL="https://github.com/protocolbuffers/protobuf/releases" && \
+        curl -LO $PB_REL/download/v${VERSION}/protoc-${VERSION}-linux-x86_64.zip && \
+        unzip protoc-${VERSION}-linux-x86_64.zip -d ${LOCAL} && \
+        echo "##vso[task.prependpath]${LOCAL}/bin/"
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    displayName: 'Get dependencies'
+
+  - script: |
+      export PATH=$PATH:$GOBIN && \
+        mkdir -p golang && \
+        protoc -I=protos --descriptor_set_in=$(Pipeline.Workspace)/LedgerImage/ledger-image.bin --go_out=golang protos/contract_messages.proto protos/ledger_messages.proto && \
+        ls -al golang
+        mv golang/https:/github.com/hyperledgendary/fabric-ledger-protos-go/contract fabric-ledger-protos-go
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    displayName: 'Generate lib'
+
+  - publish: $(System.DefaultWorkingDirectory)/fabric-ledger-protos-go
+    artifact: GoLib
