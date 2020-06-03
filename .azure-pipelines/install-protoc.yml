@@ -1,0 +1,12 @@
+steps:
+- script: |
+    LOCAL="$(Pipeline.Workspace)/.local/" && \
+    mkdir -p "${LOCAL}" && \
+    VERSION="3.12.1" && \
+      PB_REL="https://github.com/protocolbuffers/protobuf/releases" && \
+      curl -LO $PB_REL/download/v${VERSION}/protoc-${VERSION}-linux-x86_64.zip && \
+      unzip protoc-${VERSION}-linux-x86_64.zip -d ${LOCAL} && \
+      echo "##vso[task.prependpath]${LOCAL}/bin/"
+  workingDirectory: '$(System.DefaultWorkingDirectory)'
+  name: InstallProtoc
+  displayName: 'Install protoc tool'

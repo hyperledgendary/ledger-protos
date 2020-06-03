@@ -1,4 +1,5 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  */
-include!(concat!(env!("OUT_DIR"), "/hyperledgendary.rs"));
+pub mod contract_messages;
+pub mod ledger_messages;

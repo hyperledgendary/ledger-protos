@@ -54,37 +54,51 @@ jobs:
     inputs:
       version: '1.13.5'
 
-  # - task: Go@0
-  #   displayName: 'go get proto'
-  #   inputs:
-  #     command: get
-  #     arguments: '-u github.com/golang/protobuf/proto'
-
   - task: Go@0
     displayName: 'go get protoc-gen-go'
     inputs:
       command: get
       arguments: '-u github.com/golang/protobuf/protoc-gen-go'
 
-  - script: |
-      LOCAL="$(Pipeline.Workspace)/.local/" && \
-      mkdir -p "${LOCAL}" && \
-      VERSION="3.12.1" && \
-        PB_REL="https://github.com/protocolbuffers/protobuf/releases" && \
-        curl -LO $PB_REL/download/v${VERSION}/protoc-${VERSION}-linux-x86_64.zip && \
-        unzip protoc-${VERSION}-linux-x86_64.zip -d ${LOCAL} && \
-        echo "##vso[task.prependpath]${LOCAL}/bin/"
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
-    displayName: 'Get dependencies'
+  - template: .azure-pipelines/install-protoc.yml
 
   - script: |
       export PATH=$PATH:$GOBIN && \
-        mkdir -p golang && \
-        protoc -I=protos --descriptor_set_in=$(Pipeline.Workspace)/LedgerImage/ledger-image.bin --go_out=golang protos/contract_messages.proto protos/ledger_messages.proto && \
-        ls -al golang
-        mv golang/https:/github.com/hyperledgendary/fabric-ledger-protos-go/contract fabric-ledger-protos-go
+        mkdir -p out/golang && \
+        protoc -I=protos --descriptor_set_in=$(Pipeline.Workspace)/LedgerImage/ledger-image.bin --go_out=out/golang protos/contract_messages.proto protos/ledger_messages.proto && \
+        mv out/golang/https:/github.com/hyperledgendary/fabric-ledger-protos-go/contract fabric-ledger-protos-go
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     displayName: 'Generate lib'
 
   - publish: $(System.DefaultWorkingDirectory)/fabric-ledger-protos-go
     artifact: GoLib
+
+- job: GenerateRustLib
+  displayName: 'Generate Rust lib'
+  dependsOn: BuildLedgerImage
+
+  steps:
+  - download: current
+    artifact: LedgerImage
+
+  - script: |
+      curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path --default-toolchain default
+      echo "##vso[task.prependpath]$HOME/.cargo/bin"
+    displayName: 'Install rust'
+
+  - script: |
+      cargo install protobuf-codegen
+    displayName: 'Install protoc-gen-rust'
+
+  - template: .azure-pipelines/install-protoc.yml
+
+  - script: |
+      export PATH=$PATH:$GOBIN && \
+        mkdir -p out/rust && \
+        protoc -I=protos --descriptor_set_in=$(Pipeline.Workspace)/LedgerImage/ledger-image.bin --rust_out=out/rust protos/contract_messages.proto protos/ledger_messages.proto && \
+        mv out/rust/*.rs fabric-ledger-protos-rust/src
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    displayName: 'Generate lib'
+
+  - publish: $(System.DefaultWorkingDirectory)/fabric-ledger-protos-rust
+    artifact: RustLib
