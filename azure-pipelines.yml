@@ -70,6 +70,12 @@ jobs:
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     displayName: 'Generate lib'
 
+  - task: Go@0
+    inputs:
+      command: 'build'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/fabric-ledger-protos-go'
+    displayName: 'Build lib'
+
   - publish: $(System.DefaultWorkingDirectory)/fabric-ledger-protos-go
     artifact: GoLib
 
@@ -93,12 +99,16 @@ jobs:
   - template: .azure-pipelines/install-protoc.yml
 
   - script: |
-      export PATH=$PATH:$GOBIN && \
-        mkdir -p out/rust && \
+      mkdir -p out/rust && \
         protoc -I=protos --descriptor_set_in=$(Pipeline.Workspace)/LedgerImage/ledger-image.bin --rust_out=out/rust protos/contract_messages.proto protos/ledger_messages.proto && \
         mv out/rust/*.rs fabric-ledger-protos-rust/src
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     displayName: 'Generate lib'
+
+  - script: |
+      cargo publish --allow-dirty --dry-run
+    workingDirectory: '$(System.DefaultWorkingDirectory)/fabric-ledger-protos-rust'
+    displayName: 'Build lib'
 
   - publish: $(System.DefaultWorkingDirectory)/fabric-ledger-protos-rust
     artifact: RustLib
