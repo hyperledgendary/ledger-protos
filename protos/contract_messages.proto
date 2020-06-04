@@ -24,6 +24,11 @@ message InvokeTransactionResponse {
   bytes payload = 1;
 }
 
+message InvokeTransactionError {
+  int32 code = 1;
+  string message = 2;
+}
+
 // This is going to need TLS settings and client CA stuff...
 message RegisterPeerRequest {
   string peer_address = 1;
