@@ -17,7 +17,8 @@ message InvokeTransactionRequest {
   string channel_id = 1;
   string transaction_id = 2; 
   string transaction_name = 3;
-  bytes payload = 4;
+  repeated bytes args = 4;
+  repeated bytes transient_args = 5;
 }
 
 message InvokeTransactionResponse {
