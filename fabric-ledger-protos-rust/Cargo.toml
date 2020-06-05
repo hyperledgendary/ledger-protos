@@ -3,7 +3,7 @@ name = "fabric_ledger_protos"
 description = """
 Rust library for encoding and decoding Hyperledger Fabric contract messages (generated)
 """
-version = "0.2.0"
+version = "0.3.0"
 readme = "README.md"
 authors = ["Hyperledger Fabric Developers"]
 license = "Apache-2.0"
