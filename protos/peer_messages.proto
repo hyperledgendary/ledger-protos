@@ -6,16 +6,23 @@ package contract;
 
 option go_package = "https://github.com/hyperledgendary/fabric-ledger-protos-go/contract";
 
+import "common_messages.proto";
+
 // Same as contract.proto or does invoking chaincode from chaincode require anything different?
 message InvokeTransactionRequest {
-  string channel_id = 1;
-  string transaction_id = 2; 
-  string transaction_name = 3;
-  bytes payload = 4;
+  TransactionContext context = 1;
+  string transaction_name = 2;
+  repeated bytes args = 3;
+  repeated bytes transient_args = 4;
 }
 
 message InvokeTransactionResponse {
   bytes payload = 1;
+}
+
+message InvokeTransactionError {
+  int32 code = 1;
+  string message = 2;
 }
 
 // This is going to need TLS settings and client CA stuff...

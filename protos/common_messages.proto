@@ -1,0 +1,12 @@
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package contract;
+
+option go_package = "https://github.com/hyperledgendary/fabric-ledger-protos-go/contract";
+
+message TransactionContext {
+  string channel_id = 1;
+  string transaction_id = 2;
+}

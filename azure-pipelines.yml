@@ -65,7 +65,7 @@ jobs:
   - script: |
       export PATH=$PATH:$GOBIN && \
         mkdir -p out/golang && \
-        protoc -I=protos --descriptor_set_in=$(Pipeline.Workspace)/LedgerImage/ledger-image.bin --go_out=out/golang protos/contract_messages.proto protos/ledger_messages.proto && \
+        protoc -I=protos --descriptor_set_in=$(Pipeline.Workspace)/LedgerImage/ledger-image.bin --go_out=out/golang protos/common_messages.proto protos/contract_messages.proto protos/ledger_messages.proto && \
         mv out/golang/https:/github.com/hyperledgendary/fabric-ledger-protos-go/contract fabric-ledger-protos-go
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     displayName: 'Generate lib'
@@ -100,7 +100,7 @@ jobs:
 
   - script: |
       mkdir -p out/rust && \
-        protoc -I=protos --descriptor_set_in=$(Pipeline.Workspace)/LedgerImage/ledger-image.bin --rust_out=out/rust protos/contract_messages.proto protos/ledger_messages.proto && \
+        protoc -I=protos --descriptor_set_in=$(Pipeline.Workspace)/LedgerImage/ledger-image.bin --rust_out=out/rust protos/common_messages.proto protos/contract_messages.proto protos/ledger_messages.proto && \
         mv out/rust/*.rs fabric-ledger-protos-rust/src
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     displayName: 'Generate lib'
