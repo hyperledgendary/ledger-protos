@@ -1,2 +1,6 @@
 /fabric-ledger-protos-rust/target
 /fabric-ledger-protos-rust/Cargo.lock
+
+**/ledger-image.bin
+
+/fabric-ledger-protos-node/*_pb*
