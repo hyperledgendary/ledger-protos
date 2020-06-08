@@ -6,6 +6,8 @@ package contract;
 
 option go_package = "https://github.com/hyperledgendary/fabric-ledger-protos-go/contract";
 
+import "common_messages.proto";
+
 message GetMetadataRequest {
 }
 
@@ -14,11 +16,10 @@ message GetMetadataResponse {
 }
 
 message InvokeTransactionRequest {
-  string channel_id = 1;
-  string transaction_id = 2; 
-  string transaction_name = 3;
-  repeated bytes args = 4;
-  repeated bytes transient_args = 5;
+  TransactionContext context = 1;
+  string transaction_name = 2;
+  repeated bytes args = 3;
+  repeated bytes transient_args = 4;
 }
 
 message InvokeTransactionResponse {

@@ -8,6 +8,8 @@ option go_package = "https://github.com/hyperledgendary/fabric-ledger-protos-go/
 
 import "google/protobuf/timestamp.proto";
 
+import "common_messages.proto";
+
 message State {
   string key = 1;
   bytes value = 2;
@@ -26,21 +28,17 @@ message KeyRangeQuery {
   string end_key = 2;
 }
 
-message PartialKeyQuery { }
-
-message FromKeyQuery { }
-
-message ToKeyQuery { }
+message RichQuery { }
 
 message CreateStateRequest {
-  string transaction_id = 1;
+  TransactionContext context = 1;
   State state = 2;
 }
 
 message CreateStateResponse { }
 
 message ReadStateRequest {
-  string transaction_id = 1;
+  TransactionContext context = 1;
   string state_key = 2;
 }
 
@@ -49,21 +47,21 @@ message ReadStateResponse {
 }
 
 message UpdateStateRequest {
-  string transaction_id = 1;
+  TransactionContext context = 1;
   State state = 2;
 }
 
 message UpdateStateResponse { }
 
 message DeleteStateRequest {
-  string transaction_id = 1;
+  TransactionContext context = 1;
   string state_key = 2;
 }
 
 message DeleteStateResponse { }
 
 message ExistsStateRequest {
-  string transaction_id = 1;
+  TransactionContext context = 1;
   string state_key = 2;
 }
 
@@ -72,11 +70,10 @@ message ExistsStateResponse {
 }
 
 message GetStatesRequest {
+  TransactionContext context = 1;
   oneof query {
-    KeyRangeQuery by_key_range = 1;
-    PartialKeyQuery by_partial_key = 2;
-    FromKeyQuery by_from_key = 3;
-    ToKeyQuery by_to_key = 4;
+    KeyRangeQuery by_key_range = 2;
+    RichQuery by_rich_query = 3;
   }
 }
 
