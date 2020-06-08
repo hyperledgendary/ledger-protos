@@ -112,3 +112,32 @@ jobs:
 
   - publish: $(System.DefaultWorkingDirectory)/fabric-ledger-protos-rust
     artifact: RustLib
+
+- job: GenerateNodeLib
+  displayName: 'Generate Node lib'
+  dependsOn: BuildLedgerImage
+
+  steps:
+  - download: current
+    artifact: LedgerImage
+
+  - template: .azure-pipelines/install-protoc.yml
+
+  - script: |
+       npm install
+    workingDirectory: '$(System.DefaultWorkingDirectory)/fabric-ledger-protos-node'
+
+  - script: |
+      export PROTOC_GEN_TS_PATH="$(System.DefaultWorkingDirectory)/fabric-ledger-protos-node/node_modules/.bin/protoc-gen-ts"
+      export OUT_DIR=$(System.DefaultWorkingDirectory)/fabric-ledger-protos-node/
+      protoc -I=protos --plugin="protoc-gen-ts=${PROTOC_GEN_TS_PATH}" --descriptor_set_in=$(Pipeline.Workspace)/LedgerImage/ledger-image.bin --js_out="import_style=commonjs,binary:${OUT_DIR}" --ts_out="${OUT_DIR}"    protos/contract_messages.proto protos/ledger_messages.proto 
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    displayName: 'Generate lib'
+
+  - script: |
+      npm pack
+    workingDirectory: '$(System.DefaultWorkingDirectory)/fabric-ledger-protos-node'
+    displayName: 'Build lib'
+
+  - publish: $(System.DefaultWorkingDirectory)/fabric-ledger-protos-node/fabric-ledger-protos-node-1.0.0.tgz
+    artifact: npm_tgz
