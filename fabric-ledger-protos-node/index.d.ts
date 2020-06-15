@@ -5,7 +5,8 @@
 
 */
 
+import * as common_messages from './common_messages_pb'
 import * as contract_messages from './contract_messages_pb'
 import * as ledger_messages from './ledger_messages_pb'
 
-export  { contract_messages, ledger_messages };
+export  { common_messages, contract_messages, ledger_messages };

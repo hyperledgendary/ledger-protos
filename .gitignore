@@ -1,6 +1,8 @@
 /fabric-ledger-protos-rust/target
 /fabric-ledger-protos-rust/Cargo.lock
 
-**/ledger-image.bin
-
+/fabric-ledger-protos-node/node_modules/
 /fabric-ledger-protos-node/*_pb*
+
+**/ledger-image.bin
+*.tgz
