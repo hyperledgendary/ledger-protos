@@ -1,6 +1,6 @@
 {
   "name": "@hyperledgendary/fabric-ledger-protos",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Node.js library for encoding and decoding Hyperledger Fabric contract messages (generated)",
   "main": "index.js",
   "keywords": [
