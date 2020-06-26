@@ -1,11 +1,16 @@
 /docs/_site/
 /docs/.sass-cache/
 
-/fabric-ledger-protos-rust/target
-/fabric-ledger-protos-rust/Cargo.lock
+/*-rust/target
+/*-rust/Cargo.lock
+
+/fabric-ledger-protos-rust/src/*.rs
+!/fabric-ledger-protos-rust/src/lib.rs
 
 /fabric-ledger-protos-node/node_modules/
 /fabric-ledger-protos-node/*_pb*
 
 **/ledger-image.bin
 *.tgz
+
+*.bin

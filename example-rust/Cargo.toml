@@ -1,0 +1,9 @@
+[package]
+name = "example-rust"
+version = "0.1.0"
+authors = ["Hyperledger Fabric Developers"]
+edition = "2018"
+
+[dependencies]
+fabric_ledger_protos = { path = "../fabric-ledger-protos-rust", version = "0.5.0" }
+protobuf = "2.14.0"
