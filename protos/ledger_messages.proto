@@ -78,5 +78,5 @@ message GetStatesRequest {
 }
 
 message GetStatesResponse {
-  repeated State state = 1;
+  repeated State states = 1;
 }
