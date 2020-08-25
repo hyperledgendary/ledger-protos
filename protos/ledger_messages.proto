@@ -10,6 +10,10 @@ import "google/protobuf/timestamp.proto";
 
 import "common_messages.proto";
 
+message Collection {
+  string name = 1;
+}
+
 message State {
   string key = 1;
   bytes value = 2;
@@ -32,14 +36,16 @@ message RichQuery { }
 
 message CreateStateRequest {
   TransactionContext context = 1;
-  State state = 2;
+  Collection collection = 2;
+  State state = 3;
 }
 
 message CreateStateResponse { }
 
 message ReadStateRequest {
   TransactionContext context = 1;
-  string state_key = 2;
+  Collection collection = 2;
+  string state_key = 3;
 }
 
 message ReadStateResponse {
@@ -48,21 +54,24 @@ message ReadStateResponse {
 
 message UpdateStateRequest {
   TransactionContext context = 1;
-  State state = 2;
+  Collection collection = 2;
+  State state = 3;
 }
 
 message UpdateStateResponse { }
 
 message DeleteStateRequest {
   TransactionContext context = 1;
-  string state_key = 2;
+  Collection collection = 2;
+  string state_key = 3;
 }
 
 message DeleteStateResponse { }
 
 message ExistsStateRequest {
   TransactionContext context = 1;
-  string state_key = 2;
+  Collection collection = 2;
+  string state_key = 3;
 }
 
 message ExistsStateResponse {
@@ -71,9 +80,10 @@ message ExistsStateResponse {
 
 message GetStatesRequest {
   TransactionContext context = 1;
+  Collection collection = 2;
   oneof query {
-    KeyRangeQuery by_key_range = 2;
-    RichQuery by_rich_query = 3;
+    KeyRangeQuery by_key_range = 3;
+    RichQuery by_rich_query = 4;
   }
 }
 
