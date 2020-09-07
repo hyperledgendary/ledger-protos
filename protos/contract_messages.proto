@@ -19,7 +19,7 @@ message InvokeTransactionRequest {
   TransactionContext context = 1;
   string transaction_name = 2;
   repeated bytes args = 3;
-  repeated bytes transient_args = 4;
+  map<string, bytes> transient_args = 4;
 }
 
 message InvokeTransactionResponse {
