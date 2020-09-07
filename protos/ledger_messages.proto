@@ -90,3 +90,44 @@ message GetStatesRequest {
 message GetStatesResponse {
   repeated State states = 1;
 }
+
+message EndorsementPrincipal {
+  string msp_id = 1;
+  enum Role {
+    MEMBER = 0;
+    ADMIN = 1;
+    CLIENT = 2;
+    PEER = 3;
+  }
+  Role role = 2;
+}
+
+message EndorsementRule {
+  int32 min_endorsements = 1;
+  repeated EndorsementPrincipal principals = 2;
+  repeated EndorsementRule rules = 3;
+}
+
+message EndorsementPolicy {
+  EndorsementRule rule = 1;
+}
+
+message GetEndorsementPolicyRequest {
+  TransactionContext context = 1;
+  Collection collection = 2;
+  string state_key = 3;
+}
+
+message GetEndorsementPolicyResponse {
+  EndorsementPolicy policy = 1;
+}
+
+message SetEndorsementPolicyRequest {
+  TransactionContext context = 1;
+  Collection collection = 2;
+  string state_key = 3;
+  EndorsementPolicy policy = 4;
+}
+
+message SetEndorsementPolicyResponse {
+}

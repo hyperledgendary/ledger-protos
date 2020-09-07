@@ -16,4 +16,6 @@ service LedgerService {
   rpc DeleteState (DeleteStateRequest) returns (DeleteStateResponse);
   rpc ExistsState (ExistsStateRequest) returns (ExistsStateResponse);
   rpc GetStates (GetStatesRequest) returns (stream GetStatesResponse);
+  rpc GetEndorsementPolicy (GetEndorsementPolicyRequest) returns (stream GetEndorsementPolicyResponse);
+  rpc SetEndorsementPolicy (SetEndorsementPolicyRequest) returns (stream SetEndorsementPolicyResponse);
 }
