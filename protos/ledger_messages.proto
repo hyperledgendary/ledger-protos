@@ -91,6 +91,16 @@ message GetStatesResponse {
   repeated State states = 1;
 }
 
+message GetHashRequest {
+  TransactionContext context = 1;
+  Collection collection = 2;
+  string state_key = 3;
+}
+
+message GetHashResponse {
+  bytes hash = 1;
+}
+
 message EndorsementPrincipal {
   string msp_id = 1;
   enum Role {
