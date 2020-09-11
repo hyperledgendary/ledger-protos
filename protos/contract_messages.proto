@@ -15,11 +15,21 @@ message GetMetadataResponse {
   bytes payload = 1;
 }
 
+message ClientIdentity {
+  string msp_id = 1;
+}
+
+message PeerIdentity {
+  string msp_id = 1;
+}
+
 message InvokeTransactionRequest {
   TransactionContext context = 1;
   string transaction_name = 2;
   repeated bytes args = 3;
   map<string, bytes> transient_args = 4;
+  PeerIdentity peer_identity = 5;
+  ClientIdentity client_identity = 6;
 }
 
 message InvokeTransactionResponse {
