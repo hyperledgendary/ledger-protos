@@ -1,5 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
+/**
+ * Ledger related services.
+ * 
+ * Services are not currently generated however they document what operations are exposed
+ * via waPC in the Wasm tech preview.
+ */
 syntax = "proto3";
 
 package contract;
@@ -7,16 +13,32 @@ package contract;
 option go_package = "https://github.com/hyperledgendary/fabric-ledger-protos-go/contract";
 
 import "ledger_messages.proto";
-import "google/protobuf/timestamp.proto";
 
+/**
+ * Service for handling ledger calls from a smart contract.
+ */
 service LedgerService {
+  /// Create a new state in the ledger if it does not exist already.
   rpc CreateState (CreateStateRequest) returns (CreateStateResponse);
+
+  /// Read a state from the ledger.
   rpc ReadState (ReadStateRequest) returns (ReadStateResponse);
+
+  /// Update an existing state in the ledger.
   rpc UpdateState (UpdateStateRequest) returns (UpdateStateResponse);
-  rpc DeleteState (DeleteStateRequest) returns (DeleteStateResponse);
+
+  /// Check whether a state exists in the ledger.
   rpc ExistsState (ExistsStateRequest) returns (ExistsStateResponse);
+
+  /// Read multiple states from the ledger.
   rpc GetStates (GetStatesRequest) returns (stream GetStatesResponse);
+
+  /// Get the hash of a state in the ledger.
   rpc GetHash (GetHashRequest) returns (GetHashResponse);
+
+  /// Get the endorsement policy for a state in the ledger.
   rpc GetEndorsementPolicy (GetEndorsementPolicyRequest) returns (stream GetEndorsementPolicyResponse);
+
+  /// Set the endorsement policy for a state in the ledger.
   rpc SetEndorsementPolicy (SetEndorsementPolicyRequest) returns (stream SetEndorsementPolicyResponse);
 }
