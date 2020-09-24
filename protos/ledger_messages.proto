@@ -1,103 +1,179 @@
 // SPDX-License-Identifier: Apache-2.0
 
+/**
+ * Ledger related messages.
+ */
 syntax = "proto3";
 
 package contract;
 
 option go_package = "https://github.com/hyperledgendary/fabric-ledger-protos-go/contract";
 
-import "google/protobuf/timestamp.proto";
-
 import "common_messages.proto";
 
+/**
+ * A collection is a set of states, with each state holding a business object or data.
+ */
 message Collection {
+  /// Private collections are identified by name. The default, world state collection, has no name.
   string name = 1;
 }
 
+/**
+ * A state holds the value of a business object or data, addressed by a key.
+ */
 message State {
+  /// Key
   string key = 1;
+  /// Value
   bytes value = 2;
 }
 
-message StateHistory {
-  string key = 1;
-  bytes value = 2;
-  string transaction_id = 3;
-  google.protobuf.Timestamp timestamp = 4;
-  bool is_delete = 5;
-}
-
+/** 
+ * Defines a key based query for a GetStatesRequest request.
+ * Open ended range queries are supported if the start key and/or end key are not provided.
+ */
 message KeyRangeQuery {
+  /// Start key
   string start_key = 1;
+
+  /// End key
   string end_key = 2;
+
+  /// Page size
+  int32 page_size = 3;
 }
 
+/**
+ * Defines a rich query for a GetStatesRequest request.
+ */
 message RichQuery { }
 
+/**
+ * Request message for a CreateState call.
+ */
 message CreateStateRequest {
+  /// Context of the current transaction.
   TransactionContext context = 1;
+
+  /// The collection the state should be created in.
   Collection collection = 2;
+
+  /// The new state.
   State state = 3;
 }
 
+/**
+ * Response message from a CreateState call.
+ */
 message CreateStateResponse { }
 
+/**
+ * Request message for a ReadState call.
+ */
 message ReadStateRequest {
+  /// Context of the current transaction.
   TransactionContext context = 1;
+
+  /// The collection the state should be read from.
   Collection collection = 2;
+
+  /// Key of the state to read.
   string state_key = 3;
 }
 
+/**
+ * Response message from a ReadState call.
+ */
 message ReadStateResponse {
+  /// The requested state.
   State state = 1;
 }
 
+/**
+ * Request message for an UpdateState call.
+ */
 message UpdateStateRequest {
+  /// Context of the current transaction.
   TransactionContext context = 1;
+
+  /// The collection the state should be updated in.
   Collection collection = 2;
+
+  /// The updated state.
   State state = 3;
 }
 
+/**
+ * Response message from an UpdateState call.
+ */
 message UpdateStateResponse { }
 
-message DeleteStateRequest {
-  TransactionContext context = 1;
-  Collection collection = 2;
-  string state_key = 3;
-}
-
-message DeleteStateResponse { }
-
+/**
+ * Request message for an ExistsState call.
+ */
 message ExistsStateRequest {
+  /// Context of the current transaction.
   TransactionContext context = 1;
+
+  /// The collection to check for the specified state key.
   Collection collection = 2;
+
+  /// Key of the state to check.
   string state_key = 3;
 }
 
+/**
+ * Response message from a ExistsState call.
+ */
 message ExistsStateResponse {
+  /// True if the specified state exists, and false otherwise.
   bool exists = 1;
 }
 
+/**
+ * Request message for a GetStates call.
+ */
 message GetStatesRequest {
+  /// Context of the current transaction.
   TransactionContext context = 1;
+
+  /// The collection the states should be queried in.
   Collection collection = 2;
+
   oneof query {
     KeyRangeQuery by_key_range = 3;
     RichQuery by_rich_query = 4;
   }
 }
 
+/**
+ * Response message from a GetStates call.
+ */
 message GetStatesResponse {
+  /// The requested states.
   repeated State states = 1;
 }
 
+/**
+ * Request message for a GetHash call.
+ */
 message GetHashRequest {
+  /// Context of the current transaction.
   TransactionContext context = 1;
+
+  /// The collection the state hash should be read from.
   Collection collection = 2;
+
+  /// Key of the state to hash.
   string state_key = 3;
 }
 
+/**
+ * Response message from a GetHash call.
+ */
 message GetHashResponse {
+  /// Hash of the requested state.
   bytes hash = 1;
 }
 
@@ -122,22 +198,36 @@ message EndorsementPolicy {
   EndorsementRule rule = 1;
 }
 
+/**
+ * Request message for a GetEndorsementPolicy call.
+ */
 message GetEndorsementPolicyRequest {
+  /// Context of the current transaction.
   TransactionContext context = 1;
   Collection collection = 2;
   string state_key = 3;
 }
 
+/**
+ * Response message from a GetEndorsementPolicy call.
+ */
 message GetEndorsementPolicyResponse {
   EndorsementPolicy policy = 1;
 }
 
+/**
+ * Request message for a SetEndorsementPolicy call.
+ */
 message SetEndorsementPolicyRequest {
+  /// Context of the current transaction.
   TransactionContext context = 1;
   Collection collection = 2;
   string state_key = 3;
   EndorsementPolicy policy = 4;
 }
 
+/**
+ * Response message from a SetEndorsementPolicy call.
+ */
 message SetEndorsementPolicyResponse {
 }

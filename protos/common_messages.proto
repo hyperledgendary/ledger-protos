@@ -1,12 +1,21 @@
 // SPDX-License-Identifier: Apache-2.0
 
+/**
+ * Common messages.
+ */
 syntax = "proto3";
 
 package contract;
 
 option go_package = "https://github.com/hyperledgendary/fabric-ledger-protos-go/contract";
 
+/**
+ * Provides the context necessary for interacting with the ledger.
+ */
 message TransactionContext {
+  /// The channel which the transaction is on
   string channel_id = 1;
+
+  /// Identifier for the transaction.
   string transaction_id = 2;
 }

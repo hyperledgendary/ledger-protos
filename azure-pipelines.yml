@@ -5,6 +5,20 @@ pool:
   vmImage: 'ubuntu-latest'
 
 jobs:
+- job: GenerateDoc
+  displayName: 'Build docs'
+  steps:
+  - script: |
+      docker run --rm \
+        -v $(pwd)/docs:/out \
+        -v $(pwd)/protos:/protos \
+        pseudomuto/protoc-gen-doc --doc_opt=markdown,protos.md
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    displayName: 'Generate proto docs'
+
+  - publish: $(System.DefaultWorkingDirectory)/docs
+    artifact: Docs
+
 - job: BuildLedgerImage
   displayName: 'Build proto image'
   steps:
@@ -31,7 +45,7 @@ jobs:
     displayName: 'Lint'
 
   - script: |
-      buf image build -o ledger-image.bin --file protos/contract_messages.proto --file protos/ledger_messages.proto
+      buf image build -o ledger-image.bin --file protos/common_messages.proto --file protos/contract_messages.proto --file protos/ledger_messages.proto
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     displayName: 'Build'
 
@@ -142,3 +156,27 @@ jobs:
 
   - publish: $(System.DefaultWorkingDirectory)/fabric-ledger-protos-node
     artifact: NodeLib
+
+- job: PublishDoc
+  dependsOn: GenerateDoc
+  condition: and(succeeded(),eq(variables['Build.Reason'], 'IndividualCI'))
+  steps:
+  - download: current
+    artifact: Docs
+  - script: |
+      pwd
+      git reset --hard HEAD
+      git clean -xdf
+      git fetch origin
+      git checkout -b gh-pages origin/gh-pages
+      git clean -xdf
+      cp -r $(Pipeline.Workspace)/Docs/* .
+      git status
+    displayName: 'Update gh-pages branch'
+  - script: |
+      git config --global user.email "jt-nti@users.noreply.github.com"
+      git config --global user.name "James Taylor"
+      git add -A
+      git commit -m "Publishing GitHub Pages"
+      git push https://$(GITHUB-PAT)@github.com/hyperledgendary/fabric-ledger-protos.git gh-pages
+    displayName: 'Commit gh-pages changes'

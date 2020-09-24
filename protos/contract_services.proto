@@ -1,5 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
+/**
+ * Contract related services.
+ * 
+ * Services are not currently generated however they document what operations are exposed
+ * via waPC in the Wasm tech preview.
+ */
 syntax = "proto3";
 
 package contract;
@@ -8,8 +14,10 @@ option go_package = "https://github.com/hyperledgendary/fabric-ledger-protos-go/
 
 import "contract_messages.proto";
 
+/**
+ * Service for handling calls from peer to contract.
+ */
 service ContractService {
-  rpc GetMetadata (GetMetadataRequest) returns (GetMetadataResponse);
+  /// Used to invoke the transaction specified in InvokeTransactionRequest. Returns an InvokeTransactionResponse with the results.
   rpc InvokeTransaction (InvokeTransactionRequest) returns (InvokeTransactionResponse);
-  rpc RegisterPeer (RegisterPeerRequest) returns (RegisterPeerResponse);
 }

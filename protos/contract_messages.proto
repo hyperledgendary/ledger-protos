@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
+/**
+ * Contract related messages.
+ */
 syntax = "proto3";
 
 package contract;
@@ -8,34 +11,27 @@ option go_package = "https://github.com/hyperledgendary/fabric-ledger-protos-go/
 
 import "common_messages.proto";
 
-message GetMetadataRequest {
-}
-
-message GetMetadataResponse {
-  bytes payload = 1;
-}
-
+/**
+ * Request message for an InvokeTransaction call.
+ */
 message InvokeTransactionRequest {
+  /// Context the transaction will be invoked with.
   TransactionContext context = 1;
+
+  /// The name of the transaction to invoke.
   string transaction_name = 2;
+
+  /// Input parameters for the transaction.
   repeated bytes args = 3;
+
+  /// Transient data for the transaction.
   map<string, bytes> transient_args = 4;
 }
 
+/**
+ * Response message from an InvokeTransaction request.
+ */
 message InvokeTransactionResponse {
+  /// Result data from the transaction.
   bytes payload = 1;
-}
-
-message InvokeTransactionError {
-  int32 code = 1;
-  string message = 2;
-}
-
-// This is going to need TLS settings and client CA stuff...
-message RegisterPeerRequest {
-  string peer_address = 1;
-  string peer_port = 2;
-}
-
-message RegisterPeerResponse {
 }

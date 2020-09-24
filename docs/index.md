@@ -28,5 +28,6 @@ Cargo.toml: `fabric_ledger_protos = "0.4.0"`
 
 ## Documentation
 
-- [Go](https://pkg.go.dev/github.com/hyperledgendary/fabric-ledger-protos-go?tab=doc)
-- [Rust](https://docs.rs/fabric_ledger_protos/0.4.0/fabric_ledger_protos/)
+- [Protocol buffers](protos.md)
+- [Go module](https://pkg.go.dev/github.com/hyperledgendary/fabric-ledger-protos-go?tab=doc)
+- [Rust crate](https://docs.rs/fabric_ledger_protos/0.4.0/fabric_ledger_protos/)

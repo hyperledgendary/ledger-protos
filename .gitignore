@@ -1,5 +1,6 @@
 /docs/_site/
 /docs/.sass-cache/
+/docs/protos.md
 
 /fabric-ledger-protos-rust/target
 /fabric-ledger-protos-rust/Cargo.lock
