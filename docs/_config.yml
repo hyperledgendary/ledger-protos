@@ -1,2 +1,7 @@
 theme: minima
 title: "fabric-ledger-protos"
+
+plugins:
+  - jekyll-optional-front-matter
+  - jekyll-titles-from-headings
+  - jekyll-relative-links
