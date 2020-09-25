@@ -171,12 +171,12 @@ jobs:
       git checkout -b gh-pages origin/gh-pages
       git clean -xdf
       cp -r $(Pipeline.Workspace)/Docs/* .
-      git status
     displayName: 'Update gh-pages branch'
   - script: |
       git config --global user.email "jt-nti@users.noreply.github.com"
       git config --global user.name "James Taylor"
       git add -A
+      git status
       git commit -m "Publishing GitHub Pages"
       git push https://$(GITHUB-PAT)@github.com/hyperledgendary/fabric-ledger-protos.git gh-pages
     displayName: 'Commit gh-pages changes'
